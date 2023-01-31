@@ -11,7 +11,7 @@ import (
 func WebMenu() {
 	fmt.Println()
 	menu := []string{"Reset the web administrator password", "Modify the displayed domain name (not apply for a Certificate)"}
-	switch util.LoopInput("Please choose: ", menu, true) {
+	switch util.LoopInput("Please select: ", menu, true) {
 	case 1:
 		ResetAdminPass()
 	case 2:

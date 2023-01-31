@@ -21,7 +21,7 @@ var (
 func InstallMenu() {
 	fmt.Println()
 	menu := []string{"Update trojan", "Certificate application", "Install mysql"}
-	switch util.LoopInput("P: ", menu, true) {
+	switch util.LoopInput("Please select: ", menu, true) {
 	case 1:
 		InstallTrojan("")
 	case 2:
@@ -158,7 +158,7 @@ func InstallMysql() {
 	if util.IsExists("/.dockerenv") {
 		choice = 2
 	} else {
-		choice = util.LoopInput("please choose: ", []string{"Install the docker version of mysql(mariadb)", "Enter custom MYSQL connection"}, true)
+		choice = util.LoopInput("Please select: ", []string{"Install the docker version of mysql(mariadb)", "Enter custom MYSQL connection"}, true)
 	}
 	if choice < 0 {
 		return

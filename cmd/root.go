@@ -45,7 +45,7 @@ exit:
 		fmt.Println(util.Cyan("Welcome to trojan management GUI"))
 		fmt.Println()
 		menuList := []string{"trojan Management", "User Management", "Installation Management", "Web Management", "View configuration", "Generate json"}
-		switch util.LoopInput("Please choose: ", menuList, false) {
+		switch util.LoopInput("Please select: ", menuList, false) {
 		case 1:
 			trojan.ControllMenu()
 		case 2:

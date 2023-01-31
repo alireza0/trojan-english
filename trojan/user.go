@@ -13,8 +13,8 @@ import (
 // UserMenu User management menu
 func UserMenu() {
 	fmt.Println()
-	menu := []string{"New user", "Delete user", "Restricting traffic", "Clear traffic", "Set expiration", "Cancel"}
-	switch util.LoopInput("Please choose: ", menu, false) {
+	menu := []string { "Add User" , "Delete User" , "Limit Traffic" , "Clear Traffic" , "Set Time Limit" , "Cancel Time Limit" }
+	switch util.LoopInput("Please select: ", menu, false) {
 	case 1:
 		AddUser()
 	case 2:

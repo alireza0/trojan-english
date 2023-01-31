@@ -23,7 +23,7 @@ func ControllMenu() {
 	}
 	menu := []string{"Start up trojan", "Stop trojan", "Restart trojan", "View trojan status", "View Trojan log", "Modify the trojan port"}
 	menu = append(menu, "switch to"+tType)
-	switch util.LoopInput("请选择: ", menu, true) {
+	switch util.LoopInput("Please select: ", menu, true) {
 	case 1:
 		Start()
 	case 2:
