@@ -3,7 +3,7 @@ package trojan
 import (
 	"encoding/base64"
 	"fmt"
-	// "net/url"
+	"net/url"
 	"strconv"
 	"strings"
 	"trojan/core"
@@ -188,7 +188,7 @@ func UserList(ids ...string) []*core.User {
 		} else {
 			fmt.Println("Date of Expiry: " + util.Cyan(k.ExpiryDate))
 		}
-		remark := k.Username // url.QueryEscape(fmt.Sprintf("%s:%d", domain, port))
+		remark := url.QueryEscape(fmt.Sprintf("%s", k.Username))
 		fmt.Println("Share link: " + util.Green(fmt.Sprintf("trojan://%s@%s:%d#%s", string(pass), domain, port, remark)))
 		fmt.Println()
 	}
