@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
-trojan多用户管理部署程序
+Trojan multi-user management application
 
 ## Features
 -The way to manage Trojan multi -user on online web page and command lines
