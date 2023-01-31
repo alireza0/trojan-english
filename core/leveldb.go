@@ -6,7 +6,7 @@ import (
 
 var dbPath = "/var/lib/trojan-manager"
 
-// GetValue 获取leveldb值
+// GetValue Get Leveldb value
 func GetValue(key string) (string, error) {
 	db, err := leveldb.OpenFile(dbPath, nil)
 	if err != nil {
@@ -20,7 +20,7 @@ func GetValue(key string) (string, error) {
 	return string(result), nil
 }
 
-// SetValue 设置leveldb值
+// SetValue Set the leveldb value
 func SetValue(key string, value string) error {
 	db, err := leveldb.OpenFile(dbPath, nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func SetValue(key string, value string) error {
 	return db.Put([]byte(key), []byte(value), nil)
 }
 
-// DelValue 删除值
+// DelValue delete
 func DelValue(key string) error {
 	db, err := leveldb.OpenFile(dbPath, nil)
 	if err != nil {

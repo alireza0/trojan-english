@@ -11,7 +11,7 @@ import (
 
 var c *cron.Cron
 
-// SetData 设置流量限制
+// SetData Set up flow restrictions
 func SetData(id uint, quota int) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -22,7 +22,7 @@ func SetData(id uint, quota int) *ResponseBody {
 	return &responseBody
 }
 
-// CleanData 清空流量
+// CleanData Empty traffic
 func CleanData(id uint) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -40,7 +40,7 @@ func monthlyResetJob() {
 	}
 }
 
-// GetResetDay 获取重置日
+// GetResetDay Get Resetting Day
 func GetResetDay() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -52,12 +52,12 @@ func GetResetDay() *ResponseBody {
 	return &responseBody
 }
 
-// UpdateResetDay 更新重置流量日
+// UpdateResetDay Update Reset traffic day
 func UpdateResetDay(day uint) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
 	if day > 31 || day < 0 {
-		responseBody.Msg = fmt.Sprintf("%d为非正常日期", day)
+		responseBody.Msg = fmt.Sprintf("%d is an abnormal date", day)
 		return &responseBody
 	}
 	dayStr, _ := core.GetValue("reset_day")
@@ -77,7 +77,7 @@ func UpdateResetDay(day uint) *ResponseBody {
 	return &responseBody
 }
 
-// SheduleTask 定时任务
+// SheduleTask Timing task
 func SheduleTask() {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	c = cron.New(cron.WithLocation(loc))

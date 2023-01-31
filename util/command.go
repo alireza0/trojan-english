@@ -16,7 +16,7 @@ func systemctlReplace(out string) (bool, error) {
 	)
 	if IsExists("/.dockerenv") && strings.Contains(out, "Failed to get D-Bus") {
 		isReplace = true
-		fmt.Println(Yellow("正在下载并替换适配的systemctl。。"))
+		fmt.Println(Yellow("Downloading and replacing the adapted systemctl.essence"))
 		if err = ExecCommand("curl -L https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py -o /usr/bin/systemctl && chmod +x /usr/bin/systemctl"); err != nil {
 			return isReplace, err
 		}
@@ -33,47 +33,47 @@ func systemctlBase(name, operate string) (string, error) {
 	return string(out), err
 }
 
-// SystemctlStart 服务启动
+// SystemctlStart Service Start up 
 func SystemctlStart(name string) {
 	if _, err := systemctlBase(name, "start"); err != nil {
-		fmt.Println(Red(fmt.Sprintf("启动%s失败!", name)))
+		fmt.Println(Red(fmt.Sprintf("Starting %s failed!", name)))
 	} else {
-		fmt.Println(Green(fmt.Sprintf("启动%s成功!", name)))
+		fmt.Println(Green(fmt.Sprintf("Starting %s succeed!", name)))
 	}
 }
 
-// SystemctlStop 服务停止
+// SystemctlStop Service STOP 
 func SystemctlStop(name string) {
 	if _, err := systemctlBase(name, "stop"); err != nil {
-		fmt.Println(Red(fmt.Sprintf("停止%s失败!", name)))
+		fmt.Println(Red(fmt.Sprintf("Stop %s failed!", name)))
 	} else {
-		fmt.Println(Green(fmt.Sprintf("停止%s成功!", name)))
+		fmt.Println(Green(fmt.Sprintf("Stop %s succeed!", name)))
 	}
 }
 
-// SystemctlRestart 服务重启
+// SystemctlRestart Service Restart 
 func SystemctlRestart(name string) {
 	if _, err := systemctlBase(name, "restart"); err != nil {
-		fmt.Println(Red(fmt.Sprintf("重启%s失败!", name)))
+		fmt.Println(Red(fmt.Sprintf("Restart %s failed!", name)))
 	} else {
-		fmt.Println(Green(fmt.Sprintf("重启%s成功!", name)))
+		fmt.Println(Green(fmt.Sprintf("Restart %s succeed!", name)))
 	}
 }
 
-// SystemctlEnable 服务设置开机自启
+// SystemctlEnable Service settings
 func SystemctlEnable(name string) {
 	if _, err := systemctlBase(name, "enable"); err != nil {
-		fmt.Println(Red(fmt.Sprintf("设置%s开机自启失败!", name)))
+		fmt.Println(Red(fmt.Sprintf("Set up self-activation %s failed!", name)))
 	}
 }
 
-// SystemctlStatus 服务状态查看
+// SystemctlStatus View service status
 func SystemctlStatus(name string) string {
 	out, _ := systemctlBase(name, "status")
 	return out
 }
 
-// CheckCommandExists 检查命令是否存在
+// CheckCommandExists Check whether the command exists
 func CheckCommandExists(command string) bool {
 	if _, err := exec.LookPath(command); err != nil {
 		return false
@@ -81,7 +81,7 @@ func CheckCommandExists(command string) bool {
 	return true
 }
 
-// RunWebShell 运行网上的脚本
+// RunWebShell Run the Internet script
 func RunWebShell(webShellPath string) {
 	if !strings.HasPrefix(webShellPath, "http") && !strings.HasPrefix(webShellPath, "https") {
 		fmt.Printf("shell path must start with http or https!")
@@ -99,7 +99,7 @@ func RunWebShell(webShellPath string) {
 	ExecCommand(string(installShell))
 }
 
-// ExecCommand 运行命令并实时查看运行结果
+// ExecCommand Run the command and view the running results in real time
 func ExecCommand(command string) error {
 	cmd := exec.Command("bash", "-c", command)
 
@@ -139,7 +139,7 @@ func ExecCommand(command string) error {
 	return err
 }
 
-// ExecCommandWithResult 运行命令并获取结果
+// ExecCommandWithResult Run the command and get the result
 func ExecCommandWithResult(command string) string {
 	out, err := exec.Command("bash", "-c", command).CombinedOutput()
 	if strings.Contains(command, "systemctl") {

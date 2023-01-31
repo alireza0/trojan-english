@@ -7,11 +7,11 @@ import (
 	"trojan/util"
 )
 
-// WebMenu web管理菜单
+// WebMenu web management menu
 func WebMenu() {
 	fmt.Println()
-	menu := []string{"重置web管理员密码", "修改显示的域名(非申请证书)"}
-	switch util.LoopInput("请选择: ", menu, true) {
+	menu := []string{"Reset the web administrator password", "Modify the displayed domain name (not apply for a Certificate)"}
+	switch util.LoopInput("Please choose: ", menu, true) {
 	case 1:
 		ResetAdminPass()
 	case 2:
@@ -21,35 +21,35 @@ func WebMenu() {
 
 // ResetAdminPass 重置管理员密码
 func ResetAdminPass() {
-	inputPass := util.Input("请输入admin用户密码: ", "")
+	inputPass := util.Input("Please enter the admin user password: ", "")
 	if inputPass == "" {
-		fmt.Println("撤销更改!")
+		fmt.Println("Changes rejected!")
 	} else {
 		encryPass := sha256.Sum224([]byte(inputPass))
 		err := core.SetValue("admin_pass", fmt.Sprintf("%x", encryPass))
 		if err == nil {
-			fmt.Println(util.Green("重置admin密码成功!"))
+			fmt.Println(util.Green("The admin password is not reset!"))
 		} else {
 			fmt.Println(err)
 		}
 	}
 }
 
-// SetDomain 设置显示的域名
+// SetDomain Set the displayed domain name
 func SetDomain(domain string) {
 	if domain == "" {
-		domain = util.Input("请输入要显示的域名地址: ", "")
+		domain = util.Input("Please enter the domain name address to be displayed: ", "")
 	}
 	if domain == "" {
-		fmt.Println("撤销更改!")
+		fmt.Println("Changes rejected!")
 	} else {
 		core.WriteDomain(domain)
 		Restart()
-		fmt.Println("修改domain成功!")
+		fmt.Println("Modify domain is done successfully!")
 	}
 }
 
-// GetDomainAndPort 获取域名和端口
+// GetDomainAndPort Get domain name and port
 func GetDomainAndPort() (string, int) {
 	config := core.GetConfig()
 	return config.SSl.Sni, config.LocalPort

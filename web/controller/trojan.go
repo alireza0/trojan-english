@@ -17,7 +17,7 @@ import (
 	websocket "trojan/util"
 )
 
-// Start 启动trojan
+// Start Start up trojan
 func Start() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -25,7 +25,7 @@ func Start() *ResponseBody {
 	return &responseBody
 }
 
-// Stop 停止trojan
+// Stop Stop trojan
 func Stop() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -33,7 +33,7 @@ func Stop() *ResponseBody {
 	return &responseBody
 }
 
-// Restart 重启trojan
+// Restart Restart trojan
 func Restart() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -41,7 +41,7 @@ func Restart() *ResponseBody {
 	return &responseBody
 }
 
-// Update trojan更新
+// Update trojanUpdate 
 func Update() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -49,7 +49,7 @@ func Update() *ResponseBody {
 	return &responseBody
 }
 
-// SetLogLevel 修改trojan日志等级
+// SetLogLevel Modify the trojan log level
 func SetLogLevel(level int) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -58,7 +58,7 @@ func SetLogLevel(level int) *ResponseBody {
 	return &responseBody
 }
 
-// GetLogLevel 获取trojan日志等级
+// GetLogLevel Get the trojan log level
 func GetLogLevel() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -69,7 +69,7 @@ func GetLogLevel() *ResponseBody {
 	return &responseBody
 }
 
-// Log 通过ws查看trojan实时日志
+// Log View trojan realtime logs through WS
 func Log(c *gin.Context) {
 	var (
 		wsConn *websocket.WsConnection
@@ -100,7 +100,7 @@ func Log(c *gin.Context) {
 	}
 }
 
-// ImportCsv 导入csv文件到trojan数据库
+// ImportCsv Import csv file to trojan database
 func ImportCsv(c *gin.Context) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -113,7 +113,7 @@ func ImportCsv(c *gin.Context) *ResponseBody {
 	defer file.Close()
 	filename := header.Filename
 	if !strings.Contains(filename, ".csv") {
-		responseBody.Msg = "仅支持导入csv格式的文件"
+		responseBody.Msg = "Only support Import CSV file format"
 		return &responseBody
 	}
 	reader := csv.NewReader(bufio.NewReader(file))
@@ -162,12 +162,12 @@ INSERT INTO users(username, password, passwordShow, quota, download, upload, use
 	return &responseBody
 }
 
-// ExportCsv 导出trojan表数据到csv文件
+// ExportCsv  Export trojan table data to CSV file
 func ExportCsv(c *gin.Context) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
 	var dataBytes = new(bytes.Buffer)
-	//设置UTF-8 BOM, 防止中文乱码
+	//Set UTF-8 BOM to prevent Chinese garbled in Chinese
 	dataBytes.WriteString("\xEF\xBB\xBF")
 	mysql := core.GetMysql()
 	userList, err := mysql.GetData()

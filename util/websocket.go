@@ -8,32 +8,32 @@ import (
 	"sync"
 )
 
-// http升级websocket协议的配置
+// HTTP upgrade configuration of websocket protocol
 var wsUpgrader = websocket.Upgrader{
-	// 允许所有CORS跨域请求
+	// Allow all CORS cross-domain requests
 	CheckOrigin: func(r *http.Request) bool {
 		return true
 	},
 }
 
-// WsMessage websocket消息
+// WsMessage websocket message
 type WsMessage struct {
 	MessageType int
 	Data        []byte
 }
 
-// WsConnection 封装websocket连接
+// WsConnection Package WebSocket connection
 type WsConnection struct {
-	wsSocket *websocket.Conn // 底层websocket
-	inChan   chan *WsMessage // 读取队列
-	outChan  chan *WsMessage // 发送队列
+	wsSocket *websocket.Conn // The bottom websocket
+	inChan   chan *WsMessage // Read queue
+	outChan  chan *WsMessage // Send a queue
 
-	mutex     sync.Mutex // 避免重复关闭管道
+	mutex     sync.Mutex // Avoid repeatedly closed the pipeline
 	isClosed  bool
-	CloseChan chan byte // 关闭通知
+	CloseChan chan byte // Close notification
 }
 
-// 读取协程
+// Reading coroutine
 func (wsConn *WsConnection) wsReadLoop() {
 	var (
 		msgType int
@@ -42,7 +42,7 @@ func (wsConn *WsConnection) wsReadLoop() {
 		err     error
 	)
 	for {
-		// 读一个message
+		// Read a message
 		if msgType, data, err = wsConn.wsSocket.ReadMessage(); err != nil {
 			fmt.Println("Read error: " + err.Error())
 			goto CLOSED
@@ -51,7 +51,7 @@ func (wsConn *WsConnection) wsReadLoop() {
 			msgType,
 			data,
 		}
-		// 放入请求队列
+		// Put in the request queue
 		select {
 		case wsConn.inChan <- msg:
 			if string(data) == "exit" {
@@ -65,7 +65,7 @@ CLOSED:
 	wsConn.WsClose()
 }
 
-// 发送协程
+// Sending coroutine
 func (wsConn *WsConnection) wsWriteLoop() {
 	var (
 		msg *WsMessage
@@ -73,9 +73,9 @@ func (wsConn *WsConnection) wsWriteLoop() {
 	)
 	for {
 		select {
-		// 取一个应答
+		// Take a response
 		case msg = <-wsConn.outChan:
-			// 写给websocket
+			// Write to WebSocket
 			if err = wsConn.wsSocket.WriteMessage(msg.MessageType, msg.Data); err != nil {
 				fmt.Println(err)
 				goto CLOSED
@@ -88,12 +88,12 @@ CLOSED:
 	wsConn.WsClose()
 }
 
-// InitWebsocket 初始化ws
+// InitWebsocket Initialization WS
 func InitWebsocket(resp http.ResponseWriter, req *http.Request) (wsConn *WsConnection, err error) {
 	var (
 		wsSocket *websocket.Conn
 	)
-	// 应答客户端告知升级连接为websocket
+	// Answer the client to inform the upgrade connection as websocket
 	if wsSocket, err = wsUpgrader.Upgrade(resp, req, nil); err != nil {
 		return
 	}
@@ -105,15 +105,15 @@ func InitWebsocket(resp http.ResponseWriter, req *http.Request) (wsConn *WsConne
 		isClosed:  false,
 	}
 
-	// 读协程
+	// Reading coroutine
 	go wsConn.wsReadLoop()
-	// 写协程
+	// Writing corporation
 	go wsConn.wsWriteLoop()
 
 	return
 }
 
-// WsWrite 发送消息
+// WsWrite send messages
 func (wsConn *WsConnection) WsWrite(messageType int, data []byte) (err error) {
 	select {
 	case wsConn.outChan <- &WsMessage{messageType, data}:
@@ -123,7 +123,7 @@ func (wsConn *WsConnection) WsWrite(messageType int, data []byte) (err error) {
 	return
 }
 
-// WsRead 读取消息
+// WsRead Read message
 func (wsConn *WsConnection) WsRead() (msg *WsMessage, err error) {
 	select {
 	case msg = <-wsConn.inChan:
@@ -134,7 +134,7 @@ func (wsConn *WsConnection) WsRead() (msg *WsMessage, err error) {
 	return
 }
 
-// WsClose 关闭连接
+// WsClose Close the connection
 func (wsConn *WsConnection) WsClose() {
 	wsConn.wsSocket.Close()
 	wsConn.mutex.Lock()

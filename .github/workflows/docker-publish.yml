@@ -6,13 +6,13 @@ name: Docker
 # documentation.
 
 on:
-  workflow_dispatch: #github页面手动触发
+  workflow_dispatch:
   push:
     tags: [ 'v*' ]
 
 env:
   # github.repository as <account>/<repo>
-  IMAGE_NAME: jrohy/trojan
+  IMAGE_NAME: alireza0/trojan-english
 
 
 jobs:

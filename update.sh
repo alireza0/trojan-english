@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#获取当前的这个脚本所在绝对路径
+#Get the absolute path where the current script is located
 SHELL_PATH=$(cd `dirname $0`; pwd)
 
 cd $SHELL_PATH

@@ -9,7 +9,7 @@ import (
 
 var clientPath = "/root/config.json"
 
-// GenClientJson 生成客户端json
+// GenClientJson Generate client JSON
 func GenClientJson() {
 	fmt.Println()
 	var user core.User
@@ -24,7 +24,7 @@ func GenClientJson() {
 		user = *userList[0]
 	} else {
 		UserList()
-		choice := util.LoopInput("请选择要生成配置文件的用户序号: ", userList, true)
+		choice := util.LoopInput("Please select the user serial number to generate file: ", userList, true)
 		if choice < 0 {
 			return
 		}
@@ -32,12 +32,12 @@ func GenClientJson() {
 	}
 	pass, err := base64.StdEncoding.DecodeString(user.Password)
 	if err != nil {
-		fmt.Println(util.Red("Base64解码失败: " + err.Error()))
+		fmt.Println(util.Red("Base64 decoding failed: " + err.Error()))
 		return
 	}
 	if !core.WriteClient(port, string(pass), domain, clientPath) {
-		fmt.Println(util.Red("生成配置文件失败!"))
+		fmt.Println(util.Red("Generate configuration file failed!"))
 	} else {
-		fmt.Println("成功生成配置文件: " + util.Green(clientPath))
+		fmt.Println("Successfully generate configuration file: " + util.Green(clientPath))
 	}
 }

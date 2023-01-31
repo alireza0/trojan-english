@@ -12,7 +12,7 @@ import (
 	"trojan/util"
 )
 
-// ControllMenu Trojan控制菜单
+// ControllMenu Trojan control menu
 func ControllMenu() {
 	fmt.Println()
 	tType := Type()
@@ -21,8 +21,8 @@ func ControllMenu() {
 	} else {
 		tType = "trojan"
 	}
-	menu := []string{"启动trojan", "停止trojan", "重启trojan", "查看trojan状态", "查看trojan日志", "修改trojan端口"}
-	menu = append(menu, "切换为"+tType)
+	menu := []string{"Start up trojan", "Stop trojan", "Restart trojan", "View trojan status", "View Trojan log", "Modify the trojan port"}
+	menu = append(menu, "switch to"+tType)
 	switch util.LoopInput("请选择: ", menu, true) {
 	case 1:
 		Start()
@@ -36,7 +36,7 @@ func ControllMenu() {
 		go util.Log("trojan", 300)
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt, os.Kill)
-		//阻塞
+		//block
 		<-c
 	case 6:
 		ChangePort()
@@ -47,24 +47,24 @@ func ControllMenu() {
 	}
 }
 
-// Restart 重启trojan
+// Restart Restart trojan
 func Restart() {
 	util.OpenPort(core.GetConfig().LocalPort)
 	util.SystemctlRestart("trojan")
 }
 
-// Start 启动trojan
+// Start Start up trojan
 func Start() {
 	util.OpenPort(core.GetConfig().LocalPort)
 	util.SystemctlStart("trojan")
 }
 
-// Stop 停止trojan
+// Stop Stop trojan
 func Stop() {
 	util.SystemctlStop("trojan")
 }
 
-// Status 获取trojan状态
+// Status Get Trojan status
 func Status(isPrint bool) string {
 	result := util.SystemctlStatus("trojan")
 	if isPrint {
@@ -73,7 +73,7 @@ func Status(isPrint bool) string {
 	return result
 }
 
-// UpTime Trojan运行时间
+// UpTime Trojan running time
 func UpTime() string {
 	result := strings.TrimSpace(util.ExecCommandWithResult("ps -Ao etime,args|grep -v grep|grep /usr/local/etc/trojan/config.json"))
 	resultSlice := strings.Split(result, " ")
@@ -83,28 +83,28 @@ func UpTime() string {
 	return ""
 }
 
-// ChangePort 修改trojan端口
+// ChangePort Modify the trojan port
 func ChangePort() {
 	config := core.GetConfig()
 	oldPort := config.LocalPort
 	randomPort := util.RandomPort()
-	fmt.Println("当前trojan端口: " + util.Green(strconv.Itoa(oldPort)))
-	newPortStr := util.Input(fmt.Sprintf("请输入新的trojan端口(若要使用随机端口%s直接回车即可): ", util.Blue(strconv.Itoa(randomPort))), strconv.Itoa(randomPort))
+	fmt.Println("Current Trojan port: " + util.Green(strconv.Itoa(oldPort)))
+	newPortStr := util.Input(fmt.Sprintf("Please enter the new Trojan port (if you want to use the random port %s, press Enter): ", util.Blue(strconv.Itoa(randomPort))), strconv.Itoa(randomPort))
 	newPort, err := strconv.Atoi(newPortStr)
 	if err != nil {
-		fmt.Println("修改端口失败: " + err.Error())
+		fmt.Println("Failed to modify the port: " + err.Error())
 		return
 	}
 	if core.WritePort(newPort) {
 		util.OpenPort(newPort)
-		fmt.Println(util.Green("端口修改成功!"))
+		fmt.Println(util.Green("Port modified successfully!"))
 		Restart()
 	} else {
-		fmt.Println(util.Red("端口修改成功!"))
+		fmt.Println(util.Red("Port modified successfully!"))
 	}
 }
 
-// Version Trojan版本
+// Version Trojan version
 func Version() string {
 	flag := "-v"
 	if Type() == "trojan-go" {
@@ -119,7 +119,7 @@ func Version() string {
 	return tempSlice[len(tempSlice)-1]
 }
 
-// SwitchType 切换Trojan类型
+// SwitchType Switch Trojan type
 func SwitchType(tType string) error {
 	ARCH := runtime.GOARCH
 	if ARCH != "amd64" && ARCH != "arm64" {
@@ -135,7 +135,7 @@ func SwitchType(tType string) error {
 	return nil
 }
 
-// Type Trojan类型
+// Type Trojan type
 func Type() string {
 	tType, _ := core.GetValue("trojanType")
 	if tType == "" {

@@ -8,94 +8,89 @@
 
 trojan多用户管理部署程序
 
-## 功能
-- 在线web页面和命令行两种方式管理trojan多用户
-- 启动 / 停止 / 重启 trojan 服务端
-- 支持流量统计和流量限制
-- 命令行模式管理, 支持命令补全
-- 集成acme.sh证书申请
-- 生成客户端配置文件
-- 在线实时查看trojan日志
-- 在线trojan和trojan-go随时切换
-- 支持trojan://分享链接和二维码分享(仅限web页面)
-- 支持转化为clash订阅地址并导入到[clash_for_windows](https://github.com/Fndroid/clash_for_windows_pkg/releases)(仅限web页面)
-- 限制用户使用期限
+## Features
+-The way to manage Trojan multi -user on online web page and command lines
+-Beoph / stop / restart the Trojan server
+-Chide statistics and traffic restrictions
+-Plord line mode management, support command complement
+-In Integrated ACME.SH Certificate Application
+-On the client configuration file
+-Chat online real -time Trojan log
+-Trojan and Trojan-GO switch at any time
+-Chising Trojan: // Share links and QR code sharing (only web page)
+-Cap to be converted to Clash subscription address and import to [CLASH_FOR_WINDOWS] (https://github.com/fndroid/clash_FOR_WINDOWS_PKG/releases) (only web page)
+-The duration of user usage
 
-## 安装方式
-*trojan使用请提前准备好服务器可用的域名*  
+## installation method
+*Trojan, please prepare the domain name available to the server in advance*
 
-###  a. 一键脚本安装
+###  a. 一Key to install
 ```
-#安装/更新
+#Installation/update
 source <(curl -sL https://git.io/trojan-install)
 
-#卸载
+#Uninstall
 source <(curl -sL https://git.io/trojan-install) --remove
 
 ```
-安装完后输入'trojan'可进入管理程序   
-浏览器访问 https://域名 可在线web页面管理trojan用户  
-前端页面源码地址: [trojan-web](https://github.com/Jrohy/trojan-web)
+Enter the 'Trojan' to enter the management program after installation
+Browser access https: // Domain name can be available online web page to manage Trojan user
+Front page source code address: [train-web] (https://github.com/jrohy/trojan-web)
 
-### b. docker运行
-1. 安装mysql  
+### b. docker run
+1. Install mysql  
 
-因为mariadb内存使用比mysql至少减少一半, 所以推荐使用mariadb数据库
+Because MariaDB memory is at least half lower than mysql, it is recommended to use the MariaDB database
 ```
 docker run --name trojan-mariadb --restart=always -p 3306:3306 -v /home/mariadb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=trojan -e MYSQL_ROOT_HOST=% -e MYSQL_DATABASE=trojan -d mariadb:10.2
 ```
-端口和root密码以及持久化目录都可以改成其他的
-
-2. 安装trojan
+Both ports and root passwords and persistence directory can be changed to other
+2. Install Trojan
 ```
 docker run -it -d --name trojan --net=host --restart=always --privileged jrohy/trojan init
 ```
-运行完后进入容器 `docker exec -it trojan bash`, 然后输入'trojan'即可进行初始化安装   
+After running, enter the container `docker exec -it trojan bash`, Then enter 'trjan' to initialize the installation
 
-启动web服务: `systemctl start trojan-web`   
+Start a web service: `systemctl start trojan-web`   
 
-设置自启动: `systemctl enable trojan-web`
+Set self-activation: `systemctl enable trojan-web`
 
-更新管理程序: `source <(curl -sL https://git.io/trojan-install)`
+Update management program: `source <(curl -sL https://git.io/trojan-install)`
 
-## 运行截图
+## Run a screenshot
 ![avatar](asset/1.png)
 ![avatar](asset/2.png)
 
-## 命令行
+## Command Line
 ```
 Usage:
   trojan [flags]
   trojan [command]
 
 Available Commands:
-  add           添加用户
-  clean         清空指定用户流量
-  completion    自动命令补全(支持bash和zsh)
-  del           删除用户
+  add           Add user
+  clean         Clear designated user traffic
+  completion    Automatically command to make up (support BASH and ZSH)
+  del           delete users
   help          Help about any command
-  info          用户信息列表
-  log           查看trojan日志
-  port          修改trojan端口
-  restart       重启trojan
-  start         启动trojan
-  status        查看trojan状态
-  stop          停止trojan
-  tls           证书安装
-  update        更新trojan
-  updateWeb     更新trojan管理程序
-  version       显示版本号
-  import [path] 导入sql文件
-  export [path] 导出sql文件
-  web           以web方式启动
+  info          User information list
+  log           View trojan log
+  port          Modify the trojan port
+  restart       Restart trojan
+  start         Start up trojan
+  status        View trojan status
+  stop          Stop trojan
+  tls           Certificate installation
+  update        Update trojan
+  updateWeb     Update trojan management GUI
+  version       Display version number
+  import [path] Import SQL file
+  export [path] Export sql file
+  web           Start up with web 
 
 Flags:
   -h, --help   help for trojan
 ```
 
-## 注意
-安装完trojan后强烈建议开启BBR等加速: [Linux-NetSpeed](https://github.com/chiakge/Linux-NetSpeed)  
-
-## Thanks
-感谢JetBrains提供的免费GoLand  
-[![avatar](asset/jetbrains.svg)](https://jb.gg/OpenSource)
+## Notice
+After installing Trojan, it is strongly recommended to open BBR and other acceleration: [Linux-NetSpeed](https://github.com/chiakge/Linux-NetSpeed)  

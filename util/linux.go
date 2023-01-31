@@ -35,9 +35,9 @@ func RandomPort() int {
 	}
 }
 
-// IsExists 检测指定路径文件或者文件夹是否存在
+// IsExists 检测指定路径 file或者 file夹是否存在
 func IsExists(path string) bool {
-	_, err := os.Stat(path) //os.Stat获取文件信息
+	_, err := os.Stat(path) //os.Stat获取 file信息
 	if err != nil {
 		if os.IsExist(err) {
 			return true

@@ -8,7 +8,7 @@ import (
 // tlsCmd represents the tls command
 var tlsCmd = &cobra.Command{
 	Use:   "tls",
-	Short: "证书安装",
+	Short: "Certificate installation",
 	Run: func(cmd *cobra.Command, args []string) {
 		trojan.InstallTls()
 	},

@@ -10,7 +10,7 @@ import (
 
 var configPath = "/usr/local/etc/trojan/config.json"
 
-// ServerConfig 结构体
+// ServerConfig structure
 type ServerConfig struct {
 	Config
 	SSl   ServerSSL `json:"ssl"`
@@ -18,7 +18,7 @@ type ServerConfig struct {
 	Mysql Mysql     `json:"mysql"`
 }
 
-// ServerSSL 结构体
+// ServerSSL structure
 type ServerSSL struct {
 	SSL
 	Key                string `json:"key"`
@@ -29,13 +29,13 @@ type ServerSSL struct {
 	Dhparam            string `json:"dhparam"`
 }
 
-// ServerTCP 结构体
+// ServerTCP structure
 type ServerTCP struct {
 	TCP
 	PreferIPv4 bool `json:"prefer_ipv4"`
 }
 
-// Load 加载服务端配置文件
+// Load Load the server configuration File
 func Load(path string) []byte {
 	if path == "" {
 		path = configPath
@@ -48,7 +48,7 @@ func Load(path string) []byte {
 	return data
 }
 
-// Save 保存服务端配置文件
+// Save Save the server configuration File
 func Save(data []byte, path string) bool {
 	if path == "" {
 		path = configPath
@@ -60,7 +60,7 @@ func Save(data []byte, path string) bool {
 	return true
 }
 
-// GetConfig 获取config配置
+// GetConfig Get config configuration
 func GetConfig() *ServerConfig {
 	data := Load("")
 	config := ServerConfig{}
@@ -71,12 +71,12 @@ func GetConfig() *ServerConfig {
 	return &config
 }
 
-// GetMysql 获取mysql连接
+// GetMysql Get mysql connection
 func GetMysql() *Mysql {
 	return &GetConfig().Mysql
 }
 
-// WriteMysql 写mysql配置
+// WriteMysql Write mysql configuration
 func WriteMysql(mysql *Mysql) bool {
 	mysql.Enabled = true
 	data := Load("")
@@ -84,7 +84,7 @@ func WriteMysql(mysql *Mysql) bool {
 	return Save(result, "")
 }
 
-// WriteTls 写tls配置
+// WriteTls Write TLS configuration
 func WriteTls(cert, key, domain string) bool {
 	data := Load("")
 	data, _ = sjson.SetBytes(data, "ssl.cert", cert)
@@ -93,28 +93,28 @@ func WriteTls(cert, key, domain string) bool {
 	return Save(data, "")
 }
 
-// WriteDomain 写域名
+// WriteDomain Writing domain name
 func WriteDomain(domain string) bool {
 	data := Load("")
 	data, _ = sjson.SetBytes(data, "ssl.sni", domain)
 	return Save(data, "")
 }
 
-// WritePassword 写密码
+// WritePassword Writing Password
 func WritePassword(pass []string) bool {
 	data := Load("")
 	data, _ = sjson.SetBytes(data, "password", pass)
 	return Save(data, "")
 }
 
-// WritePort 写trojan端口
+// WritePort Write the Trojan port
 func WritePort(port int) bool {
 	data := Load("")
 	data, _ = sjson.SetBytes(data, "local_port", port)
 	return Save(data, "")
 }
 
-// WriteLogLevel 写日志等级
+// WriteLogLevel Write a log level
 func WriteLogLevel(level int) bool {
 	data := Load("")
 	data, _ = sjson.SetBytes(data, "log_level", level)

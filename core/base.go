@@ -1,6 +1,6 @@
 package core
 
-// Config 结构体
+// Config structure
 type Config struct {
 	RunType    string   `json:"run_type"`
 	LocalAddr  string   `json:"local_addr"`
@@ -11,7 +11,7 @@ type Config struct {
 	LogLevel   int      `json:"log_level"`
 }
 
-// SSL 结构体
+// SSL structure
 type SSL struct {
 	Cert          string   `json:"cert"`
 	Cipher        string   `json:"cipher"`
@@ -23,7 +23,7 @@ type SSL struct {
 	Sni           string   `json:"sni"`
 }
 
-// TCP 结构体
+// TCP structure
 type TCP struct {
 	NoDelay      bool `json:"no_delay"`
 	KeepAlive    bool `json:"keep_alive"`

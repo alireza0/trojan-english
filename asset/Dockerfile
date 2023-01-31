@@ -1,6 +1,6 @@
 FROM --platform=$TARGETPLATFORM centos:7
 
-LABEL maintainer="Jrohy <euvkzx@Jrohy.com>"
+LABEL maintainer="Alireza <alireza7@gmail.com>"
 
 ARG TARGETARCH
 

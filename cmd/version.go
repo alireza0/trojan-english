@@ -11,7 +11,7 @@ import (
 // versionCmd represents the Version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "显示版本号",
+	Short: "Display version number",
 	Run: func(cmd *cobra.Command, args []string) {
 		upTime := trojan.UpTime()
 		trojanVersion := trojan.Version()

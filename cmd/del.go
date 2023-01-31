@@ -8,7 +8,7 @@ import (
 // delCmd represents the del command
 var delCmd = &cobra.Command{
 	Use:   "del",
-	Short: "删除用户",
+	Short: "delete users",
 	Run: func(cmd *cobra.Command, args []string) {
 		trojan.DelUser()
 	},

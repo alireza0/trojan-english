@@ -11,7 +11,7 @@ import (
 	"trojan/trojan"
 )
 
-// UserList 获取用户列表
+// UserList Get the user list
 func UserList(requestUser string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -43,7 +43,7 @@ func UserList(requestUser string) *ResponseBody {
 	return &responseBody
 }
 
-// PageUserList 分页查询获取用户列表
+// PageUserList Paging query to get user list
 func PageUserList(curPage int, pageSize int) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -62,26 +62,26 @@ func PageUserList(curPage int, pageSize int) *ResponseBody {
 	return &responseBody
 }
 
-// CreateUser 创建用户
+// CreateUser Create users
 func CreateUser(username string, password string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
 	if username == "admin" {
-		responseBody.Msg = "不能创建用户名为admin的用户!"
+		responseBody.Msg = "Cannot create user with username admin!"
 		return &responseBody
 	}
 	mysql := core.GetMysql()
 	if user := mysql.GetUserByName(username); user != nil {
-		responseBody.Msg = "已存在用户名为: " + username + " 的用户!"
+		responseBody.Msg = "User with username: " + username + " already exists!"
 		return &responseBody
 	}
 	pass, err := base64.StdEncoding.DecodeString(password)
 	if err != nil {
-		responseBody.Msg = "Base64解码失败: " + err.Error()
+		responseBody.Msg = "Base64 decoding failed: " + err.Error()
 		return &responseBody
 	}
 	if user := mysql.GetUserByPass(password); user != nil {
-		responseBody.Msg = "已存在密码为: " + string(pass) + " 的用户!"
+		responseBody.Msg = "User with password: " + string(pass) + " already exists!"
 		return &responseBody
 	}
 	if err := mysql.CreateUser(username, password, string(pass)); err != nil {
@@ -90,12 +90,12 @@ func CreateUser(username string, password string) *ResponseBody {
 	return &responseBody
 }
 
-// UpdateUser 更新用户
+// UpdateUser Update user
 func UpdateUser(id uint, username string, password string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
 	if username == "admin" {
-		responseBody.Msg = "不能更改用户名为admin的用户!"
+		responseBody.Msg = "Cannot change the user admin!"
 		return &responseBody
 	}
 	mysql := core.GetMysql()
@@ -106,7 +106,7 @@ func UpdateUser(id uint, username string, password string) *ResponseBody {
 	}
 	if userList[0].Username != username {
 		if user := mysql.GetUserByName(username); user != nil {
-			responseBody.Msg = "已存在用户名为: " + username + " 的用户!"
+			responseBody.Msg = "User with username: " + username + " already exists!"
 			return &responseBody
 		}
 	}
@@ -117,7 +117,7 @@ func UpdateUser(id uint, username string, password string) *ResponseBody {
 	}
 	if userList[0].Password != password {
 		if user := mysql.GetUserByPass(password); user != nil {
-			responseBody.Msg = "已存在密码为: " + string(pass) + " 的用户!"
+			responseBody.Msg = "User with password: " + string(pass) + " already exists!"
 			return &responseBody
 		}
 	}
@@ -127,7 +127,7 @@ func UpdateUser(id uint, username string, password string) *ResponseBody {
 	return &responseBody
 }
 
-// DelUser 删除用户
+// DelUser delete user
 func DelUser(id uint) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -140,7 +140,7 @@ func DelUser(id uint) *ResponseBody {
 	return &responseBody
 }
 
-// SetExpire 设置用户过期
+// SetExpire Set user expiration
 func SetExpire(id uint, useDays uint) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -151,7 +151,7 @@ func SetExpire(id uint, useDays uint) *ResponseBody {
 	return &responseBody
 }
 
-// CancelExpire 取消设置用户过期
+// CancelExpire Cancel the expiration of the user
 func CancelExpire(id uint) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -162,7 +162,7 @@ func CancelExpire(id uint) *ResponseBody {
 	return &responseBody
 }
 
-// ClashSubInfo 获取clash订阅信息
+// ClashSubInfo Get CLASH subscription information
 func ClashSubInfo(c *gin.Context) {
 	token := c.Query("token")
 	if token == "" {

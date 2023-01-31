@@ -28,7 +28,7 @@ func Execute() {
 
 func check() {
 	if !util.IsExists("/usr/local/etc/trojan/config.json") {
-		fmt.Println("本机未安装trojan, 正在自动安装...")
+		fmt.Println("This machine has no trojan installed! Automatic installation in progress...")
 		trojan.InstallTrojan("")
 		core.WritePassword(nil)
 		trojan.InstallTls()
@@ -42,10 +42,10 @@ func mainMenu() {
 exit:
 	for {
 		fmt.Println()
-		fmt.Println(util.Cyan("欢迎使用trojan管理程序"))
+		fmt.Println(util.Cyan("Welcome to trojan management GUI"))
 		fmt.Println()
-		menuList := []string{"trojan管理", "用户管理", "安装管理", "web管理", "查看配置", "生成json"}
-		switch util.LoopInput("请选择: ", menuList, false) {
+		menuList := []string{"trojan Management", "User Management", "Installation Management", "Web Management", "View configuration", "Generate json"}
+		switch util.LoopInput("Please choose: ", menuList, false) {
 		case 1:
 			trojan.ControllMenu()
 		case 2:

@@ -15,7 +15,7 @@ var (
 	err            error
 )
 
-// Login auth用户验证结构体
+// Login Auth user verification structure
 type Login struct {
 	Username string `form:"username" json:"username" binding:"required"`
 	Password string `form:"password" json:"password" binding:"required"`
@@ -107,13 +107,13 @@ func updateUser(c *gin.Context) {
 	c.JSON(200, responseBody)
 }
 
-// RequestUsername 获取请求接口的用户名
+// RequestUsername Get the user name of the request interface
 func RequestUsername(c *gin.Context) string {
 	claims := jwt.ExtractClaims(c)
 	return claims[identityKey].(string)
 }
 
-// Auth 权限router
+// Auth permission router
 func Auth(r *gin.Engine, timeout int) *jwt.GinJWTMiddleware {
 	jwtInit(timeout)
 
@@ -130,7 +130,7 @@ func Auth(r *gin.Engine, timeout int) *jwt.GinJWTMiddleware {
 		} else {
 			title, err := core.GetValue("login_title")
 			if err != nil {
-				title = "trojan 管理平台"
+				title = "trojan management platform"
 			}
 			c.JSON(200, gin.H{
 				"code":    200,

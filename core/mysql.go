@@ -13,11 +13,11 @@ import (
 	"strconv"
 	"strings"
 
-	// mysql sql驱动
+	// mysql SQL driver
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Mysql 结构体
+// Mysql structure
 type Mysql struct {
 	Enabled    bool   `json:"enabled"`
 	ServerAddr string `json:"server_addr"`
@@ -28,7 +28,7 @@ type Mysql struct {
 	Cafile     string `json:"cafile"`
 }
 
-// User 用户表记录结构体
+// User: User table record structure
 type User struct {
 	ID          uint
 	Username    string
@@ -41,7 +41,7 @@ type User struct {
 	ExpiryDate  string
 }
 
-// PageQuery 分页查询的结构体
+// PageQuery Paging structure
 type PageQuery struct {
 	PageNum  int
 	CurPage  int
@@ -50,7 +50,7 @@ type PageQuery struct {
 	DataList []*User
 }
 
-// CreateTableSql 创表sql
+// CreateTablesql Create database table SQL
 var CreateTableSql = `
 CREATE TABLE IF NOT EXISTS users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -67,9 +67,9 @@ CREATE TABLE IF NOT EXISTS users (
 ) DEFAULT CHARSET=utf8mb4;
 `
 
-// GetDB 获取mysql数据库连接
+// GetDB Get mysql database connection
 func (mysql *Mysql) GetDB() *sql.DB {
-	// 屏蔽mysql驱动包的日志输出
+	// Mask the log output of the MySQL drive package
 	mysqlDriver.SetLogger(log.New(ioutil.Discard, "", 0))
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", mysql.Username, mysql.Password, mysql.ServerAddr, mysql.ServerPort, mysql.Database)
 	db, err := sql.Open("mysql", conn)
@@ -80,7 +80,7 @@ func (mysql *Mysql) GetDB() *sql.DB {
 	return db
 }
 
-// CreateTable 不存在trojan user表则自动创建
+// CreateTable Create trojan user table if it is not exists
 func (mysql *Mysql) CreateTable() {
 	db := mysql.GetDB()
 	defer db.Close()
@@ -145,11 +145,11 @@ func queryUser(db *sql.DB, sql string) (*User, error) {
 	return &User{ID: id, Username: username, Password: passShow, EncryptPass: encryptPass, Download: download, Upload: upload, Quota: quota, UseDays: useDays, ExpiryDate: expiryDate}, nil
 }
 
-// CreateUser 创建Trojan用户
+// CreateUser Create a trojan user
 func (mysql *Mysql) CreateUser(username string, base64Pass string, originPass string) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	encryPass := sha256.Sum224([]byte(originPass))
@@ -160,11 +160,11 @@ func (mysql *Mysql) CreateUser(username string, base64Pass string, originPass st
 	return nil
 }
 
-// UpdateUser 更新Trojan用户名和密码
+// UpdateUser Update trojan user name and password
 func (mysql *Mysql) UpdateUser(id uint, username string, base64Pass string, originPass string) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	encryPass := sha256.Sum224([]byte(originPass))
@@ -175,17 +175,17 @@ func (mysql *Mysql) UpdateUser(id uint, username string, base64Pass string, orig
 	return nil
 }
 
-// DeleteUser 删除用户
+// DeleteUser delete users
 func (mysql *Mysql) DeleteUser(id uint) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if userList, err := mysql.GetData(strconv.Itoa(int(id))); err != nil {
 		return err
 	} else if userList != nil && len(userList) == 0 {
-		return fmt.Errorf("不存在id为%d的用户", id)
+		return fmt.Errorf("There are no users with id %d", id)
 	}
 	if _, err := db.Exec(fmt.Sprintf("DELETE FROM users WHERE id=%d;", id)); err != nil {
 		fmt.Println(err)
@@ -194,11 +194,11 @@ func (mysql *Mysql) DeleteUser(id uint) error {
 	return nil
 }
 
-// MonthlyResetData 设置了过期时间的用户，每月定时清空使用流量
+// MonthlyResetData The user who has set an expired time shall clear the traffic regularly every month.
 func (mysql *Mysql) MonthlyResetData() error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	userList, err := queryUserList(db, "SELECT * FROM users WHERE useDays != 0 AND quota != 0")
@@ -213,7 +213,7 @@ func (mysql *Mysql) MonthlyResetData() error {
 	return nil
 }
 
-// DailyCheckExpire 检查是否有过期，过期了设置流量上限为0
+// DailyCheckExpire Check whether there is an expired, the upper limit of the setting flow is 0
 func (mysql *Mysql) DailyCheckExpire() (bool, error) {
 	needRestart := false
 	now := time.Now()
@@ -226,7 +226,7 @@ func (mysql *Mysql) DailyCheckExpire() (bool, error) {
 	yesterday, _ := time.Parse("2006-01-02", yesterdayStr)
 	db := mysql.GetDB()
 	if db == nil {
-		return false, errors.New("can't connect mysql")
+		return false, errors.New("can't connect to mysql")
 	}
 	defer db.Close()
 	userList, err := queryUserList(db, "SELECT * FROM users WHERE quota != 0")
@@ -248,11 +248,11 @@ func (mysql *Mysql) DailyCheckExpire() (bool, error) {
 	return needRestart, nil
 }
 
-// CancelExpire 取消过期时间
+// CancelExpire Cancel the expiration time
 func (mysql *Mysql) CancelExpire(id uint) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if _, err := db.Exec(fmt.Sprintf("UPDATE users SET useDays=0, expiryDate='' WHERE id=%d;", id)); err != nil {
@@ -262,7 +262,7 @@ func (mysql *Mysql) CancelExpire(id uint) error {
 	return nil
 }
 
-// SetExpire 设置过期时间
+// SetExpire Set the expiration time
 func (mysql *Mysql) SetExpire(id uint, useDays uint) error {
 	now := time.Now()
 	utc, err := time.LoadLocation("Asia/Shanghai")
@@ -275,7 +275,7 @@ func (mysql *Mysql) SetExpire(id uint, useDays uint) error {
 
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if _, err := db.Exec(fmt.Sprintf("UPDATE users SET useDays=%d, expiryDate='%s' WHERE id=%d;", useDays, expiryDate, id)); err != nil {
@@ -285,11 +285,11 @@ func (mysql *Mysql) SetExpire(id uint, useDays uint) error {
 	return nil
 }
 
-// SetQuota 限制流量
+// SetQuota Restricting traffic
 func (mysql *Mysql) SetQuota(id uint, quota int) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if _, err := db.Exec(fmt.Sprintf("UPDATE users SET quota=%d WHERE id=%d;", quota, id)); err != nil {
@@ -299,11 +299,11 @@ func (mysql *Mysql) SetQuota(id uint, quota int) error {
 	return nil
 }
 
-// CleanData 清空流量统计
+// CleanData Clear traffic statistics
 func (mysql *Mysql) CleanData(id uint) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if _, err := db.Exec(fmt.Sprintf("UPDATE users SET download=0, upload=0 WHERE id=%d;", id)); err != nil {
@@ -313,11 +313,11 @@ func (mysql *Mysql) CleanData(id uint) error {
 	return nil
 }
 
-// CleanDataByName 清空指定用户名流量统计数据
+// CleanDataByName Clear statistics of designated user presence volume
 func (mysql *Mysql) CleanDataByName(usernames []string) error {
 	db := mysql.GetDB()
 	if db == nil {
-		return errors.New("can't connect mysql")
+		return errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	runSql := "UPDATE users SET download=0, upload=0 WHERE BINARY username in ("
@@ -336,7 +336,7 @@ func (mysql *Mysql) CleanDataByName(usernames []string) error {
 	return nil
 }
 
-// GetUserByName 通过用户名来获取用户
+// GetUserByName Find user with username
 func (mysql *Mysql) GetUserByName(name string) *User {
 	db := mysql.GetDB()
 	if db == nil {
@@ -350,7 +350,7 @@ func (mysql *Mysql) GetUserByName(name string) *User {
 	return user
 }
 
-// GetUserByPass 通过密码来获取用户
+// GetUserByPass Find users by password
 func (mysql *Mysql) GetUserByPass(pass string) *User {
 	db := mysql.GetDB()
 	if db == nil {
@@ -364,7 +364,7 @@ func (mysql *Mysql) GetUserByPass(pass string) *User {
 	return user
 }
 
-// PageList 通过分页获取用户记录
+// PageList Obtain user records by pages
 func (mysql *Mysql) PageList(curPage int, pageSize int) (*PageQuery, error) {
 	var (
 		total int
@@ -372,7 +372,7 @@ func (mysql *Mysql) PageList(curPage int, pageSize int) (*PageQuery, error) {
 
 	db := mysql.GetDB()
 	if db == nil {
-		return nil, errors.New("连接mysql失败")
+		return nil, errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	offset := (curPage - 1) * pageSize
@@ -392,12 +392,12 @@ func (mysql *Mysql) PageList(curPage int, pageSize int) (*PageQuery, error) {
 	}, nil
 }
 
-// GetData 获取用户记录
+// GetData Get user record
 func (mysql *Mysql) GetData(ids ...string) ([]*User, error) {
 	querySQL := "SELECT * FROM users"
 	db := mysql.GetDB()
 	if db == nil {
-		return nil, errors.New("连接mysql失败")
+		return nil, errors.New("Can't connect to mysql!")
 	}
 	defer db.Close()
 	if len(ids) > 0 {

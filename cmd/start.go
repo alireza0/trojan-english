@@ -8,7 +8,7 @@ import (
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "启动trojan",
+	Short: "Start up trojan",
 	Run: func(cmd *cobra.Command, args []string) {
 		trojan.Start()
 	},

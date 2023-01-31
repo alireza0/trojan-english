@@ -10,7 +10,7 @@ import (
 // upgradeCmd represents the update command
 var upgradeCmd = &cobra.Command{
 	Use:   "upgrade",
-	Short: "升级数据库和trojan配置文件",
+	Short: "Upgrade database and Trojan configuration file",
 }
 
 func upgradeConfig() {
@@ -24,12 +24,12 @@ func upgradeConfig() {
 
 func init() {
 	rootCmd.AddCommand(upgradeCmd)
-	upgradeCmd.AddCommand(&cobra.Command{Use: "db", Short: "升级数据库", Run: func(cmd *cobra.Command, args []string) {
+	upgradeCmd.AddCommand(&cobra.Command{Use: "db", Short: "Upgrade database", Run: func(cmd *cobra.Command, args []string) {
 		if err := core.GetMysql().UpgradeDB(); err != nil {
 			fmt.Println(err)
 		}
 	}})
-	upgradeCmd.AddCommand(&cobra.Command{Use: "config", Short: "升级配置文件", Run: func(cmd *cobra.Command, args []string) {
+	upgradeCmd.AddCommand(&cobra.Command{Use: "config", Short: "Upgrade configuration file", Run: func(cmd *cobra.Command, args []string) {
 		upgradeConfig()
 	}})
 }

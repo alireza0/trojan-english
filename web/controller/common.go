@@ -13,7 +13,7 @@ import (
 	"trojan/trojan"
 )
 
-// ResponseBody 结构体
+// ResponseBody structure
 type ResponseBody struct {
 	Duration string
 	Data     interface{}
@@ -27,7 +27,7 @@ type speedInfo struct {
 
 var si *speedInfo
 
-// TimeCost web函数执行用时统计方法
+// TimeCost WEB function execution time statistics method
 func TimeCost(start time.Time, body *ResponseBody) {
 	body.Duration = time.Since(start).String()
 }
@@ -40,7 +40,7 @@ func clashRules() string {
 	return rules
 }
 
-// Version 获取版本信息
+// Version Get version information
 func Version() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -56,7 +56,7 @@ func Version() *ResponseBody {
 	return &responseBody
 }
 
-// SetLoginInfo 设置登录页信息
+// SetLoginInfo Set the login page information
 func SetLoginInfo(title string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -67,7 +67,7 @@ func SetLoginInfo(title string) *ResponseBody {
 	return &responseBody
 }
 
-// SetDomain 设置域名
+// SetDomain Set the domain name
 func SetDomain(domain string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -75,7 +75,7 @@ func SetDomain(domain string) *ResponseBody {
 	return &responseBody
 }
 
-// SetClashRules 设置clash规则
+// SetClashRules Set the clash rule
 func SetClashRules(rules string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -83,7 +83,7 @@ func SetClashRules(rules string) *ResponseBody {
 	return &responseBody
 }
 
-// ResetClashRules 重置clash规则
+// ResetClashRules Reset the clash rule
 func ResetClashRules() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -92,7 +92,7 @@ func ResetClashRules() *ResponseBody {
 	return &responseBody
 }
 
-// GetClashRules 获取clash规则
+// GetClashRules Get the clash rule
 func GetClashRules() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -100,7 +100,7 @@ func GetClashRules() *ResponseBody {
 	return &responseBody
 }
 
-// SetTrojanType 设置trojan类型
+// SetTrojanType Set the trojan type
 func SetTrojanType(tType string) *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)
@@ -111,7 +111,7 @@ func SetTrojanType(tType string) *ResponseBody {
 	return &responseBody
 }
 
-// CollectTask 启动收集主机信息任务
+// CollectTask Starting collect host information task
 func CollectTask() {
 	var recvCount, sentCount uint64
 	c := cron.New()
@@ -138,7 +138,7 @@ func CollectTask() {
 	c.Start()
 }
 
-// ServerInfo 获取服务器信息
+// ServerInfo Get server information
 func ServerInfo() *ResponseBody {
 	responseBody := ResponseBody{Msg: "success"}
 	defer TimeCost(time.Now(), &responseBody)

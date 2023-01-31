@@ -9,7 +9,7 @@ import (
 // infoCmd represents the info command
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "用户信息列表",
+	Short: "User information list",
 	Run: func(cmd *cobra.Command, args []string) {
 		trojan.UserList()
 	},

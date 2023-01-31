@@ -7,26 +7,26 @@ import (
 	"trojan/asset"
 )
 
-// ClientConfig 结构体
+// ClientConfig structure
 type ClientConfig struct {
 	Config
 	SSl ClientSSL `json:"ssl"`
 	Tcp ClientTCP `json:"tcp"`
 }
 
-// ClientSSL 结构体
+// ClientSSL structure
 type ClientSSL struct {
 	SSL
 	Verify         bool `json:"verify"`
 	VerifyHostname bool `json:"verify_hostname"`
 }
 
-// ClientTCP 结构体
+// ClientTCP structure
 type ClientTCP struct {
 	TCP
 }
 
-// WriteClient 生成客户端json
+// WriteClient generates client JSON
 func WriteClient(port int, password, domain, writePath string) bool {
 	data := asset.GetAsset("client.json")
 	config := ClientConfig{}

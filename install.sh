@@ -2,7 +2,7 @@
 # Author: Jrohy
 # github: https://github.com/Jrohy/trojan
 
-#定义操作变量, 0为否, 1为是
+#Define the operation variable, 0 is no, 1 is yes
 HELP=0
 
 REMOVE=0
@@ -17,7 +17,7 @@ SERVICE_URL="https://raw.githubusercontent.com/Jrohy/trojan/master/asset/trojan-
 
 [[ -e /var/lib/trojan-manager ]] && UPDATE=1
 
-#Centos 临时取消别名
+#Centos Temporary cancel
 [[ -f /etc/redhat-release && -z $(echo $SHELL|grep zsh) ]] && unalias -a
 
 [[ -z $(echo $SHELL|grep zsh) ]] && SHELL_WAY="bash" || SHELL_WAY="zsh"
@@ -60,23 +60,23 @@ help(){
 }
 
 removeTrojan() {
-    #移除trojan
+    #Remove Trojan
     rm -rf /usr/bin/trojan >/dev/null 2>&1
     rm -rf /usr/local/etc/trojan >/dev/null 2>&1
     rm -f /etc/systemd/system/trojan.service >/dev/null 2>&1
 
-    #移除trojan管理程序
+    #Remove Trojan management GUI
     rm -f /usr/local/bin/trojan >/dev/null 2>&1
     rm -rf /var/lib/trojan-manager >/dev/null 2>&1
     rm -f /etc/systemd/system/trojan-web.service >/dev/null 2>&1
 
     systemctl daemon-reload
 
-    #移除trojan的专用db
+    #Remove trojan's private db
     docker rm -f trojan-mysql trojan-mariadb >/dev/null 2>&1
     rm -rf /home/mysql /home/mariadb >/dev/null 2>&1
     
-    #移除环境变量
+    #Removing environment variables
     sed -i '/trojan/d' ~/.${SHELL_WAY}rc
     source ~/.${SHELL_WAY}rc
 
@@ -84,7 +84,7 @@ removeTrojan() {
 }
 
 checkSys() {
-    #检查是否为Root
+    #Check whether it is root
     [ $(id -u) != "0" ] && { colorEcho ${RED} "Error: You must be root to run this script"; exit 1; }
 
     ARCH=$(uname -m 2> /dev/null)
@@ -104,11 +104,11 @@ checkSys() {
         exit 1
     fi
 
-    # 缺失/usr/local/bin路径时自动添加
+    # Automatically added when the /usr/local/bin path is missing
     [[ -z `echo $PATH|grep /usr/local/bin` ]] && { echo 'export PATH=$PATH:/usr/local/bin' >> /etc/bashrc; source /etc/bashrc; }
 }
 
-#安装依赖
+#Install dependencies
 installDependent(){
     if [[ ${PACKAGE_MANAGER} == 'dnf' || ${PACKAGE_MANAGER} == 'yum' ]];then
         ${PACKAGE_MANAGER} install socat crontabs bash-completion -y
@@ -121,7 +121,7 @@ installDependent(){
 setupCron() {
     if [[ `crontab -l 2>/dev/null|grep acme` ]]; then
         if [[ -z `crontab -l 2>/dev/null|grep trojan-web` || `crontab -l 2>/dev/null|grep trojan-web|grep "&"` ]]; then
-            #计算北京时间早上3点时VPS的实际时间
+            #Calculate the actual time of VPS at 3 am in Beijing time
             ORIGIN_TIME_ZONE=$(date -R|awk '{printf"%d",$6}')
             LOCAL_TIME_ZONE=${ORIGIN_TIME_ZONE%00}
             BEIJING_ZONE=8
@@ -148,7 +148,7 @@ installTrojan(){
         rm -f /usr/local/bin/trojan
     fi
     LASTEST_VERSION=$(curl -H 'Cache-Control: no-cache' -s "$VERSION_CHECK" | grep 'tag_name' | cut -d\" -f4)
-    echo "正在下载管理程序`colorEcho $BLUE $LASTEST_VERSION`版本..."
+    echo "downloading management GUI `colorEcho $BLUE $LASTEST_VERSION` version..."
     [[ $ARCH == x86_64 ]] && BIN="trojan-linux-amd64" || BIN="trojan-linux-arm64" 
     curl -L "$DOWNLAOD_URL/$LASTEST_VERSION/$BIN" -o /usr/local/bin/trojan
     chmod +x /usr/local/bin/trojan
@@ -158,12 +158,12 @@ installTrojan(){
         systemctl daemon-reload
         systemctl enable trojan-web
     fi
-    #命令补全环境变量
+    #Command to complete environment variables
     [[ -z $(grep trojan ~/.${SHELL_WAY}rc) ]] && echo "source <(trojan completion ${SHELL_WAY})" >> ~/.${SHELL_WAY}rc
     source ~/.${SHELL_WAY}rc
     if [[ $UPDATE == 0 ]];then
-        colorEcho $GREEN "安装trojan管理程序成功!\n"
-        echo -e "运行命令`colorEcho $BLUE trojan`可进行trojan管理\n"
+        colorEcho $GREEN "Install trojan management GUI successfully!\n"
+        echo -e "Run the command `colorEcho $BLUE trojan` for trojan management\n"
         /usr/local/bin/trojan
     else
         if [[ `cat /usr/local/etc/trojan/config.json|grep -w "\"db\""` ]];then
@@ -175,16 +175,16 @@ installTrojan(){
             /usr/local/bin/trojan upgrade config
         fi
         systemctl restart trojan-web
-        colorEcho $GREEN "更新trojan管理程序成功!\n"
+        colorEcho $GREEN "Update trojan management GUI succeed!\n"
     fi
     setupCron
-    [[ $SHOW_TIP == 1 ]] && echo "浏览器访问'`colorEcho $BLUE https://域名`'可在线trojan多用户管理"
+    [[ $SHOW_TIP == 1 ]] && echo "Browser access'`colorEcho $BLUE https://domain name`' can be managed by online trojan multi-user"
 }
 
 main(){
     [[ ${HELP} == 1 ]] && help && return
     [[ ${REMOVE} == 1 ]] && removeTrojan && return
-    [[ $UPDATE == 0 ]] && echo "正在安装trojan管理程序.." || echo "正在更新trojan管理程序.."
+    [[ $UPDATE == 0 ]] && echo "Installing trojan management GUI..." || echo "Updating trojan management GUI..."
     checkSys
     [[ $UPDATE == 0 ]] && installDependent
     installTrojan
