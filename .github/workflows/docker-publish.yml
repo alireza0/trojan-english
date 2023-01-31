@@ -12,7 +12,7 @@ on:
 
 env:
   # github.repository as <account>/<repo>
-  IMAGE_NAME: alireza0/trojan-english
+  IMAGE_NAME: alireza7/trojan-english
 
 
 jobs:

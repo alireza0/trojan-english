@@ -1,6 +1,6 @@
 [Unit]
 Description=trojan-web
-Documentation=https://github.com/Jrohy/trojan
+Documentation=https://github.com/alireza0/trojan-english
 After=network.target network-online.target nss-lookup.target mysql.service mariadb.service mysqld.service docker.service
 
 [Service]

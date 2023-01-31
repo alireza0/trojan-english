@@ -1,8 +1,8 @@
 # trojan
-![](https://img.shields.io/github/v/release/Jrohy/trojan.svg) 
-![](https://img.shields.io/docker/pulls/jrohy/trojan.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Jrohy/trojan)](https://goreportcard.com/report/github.com/Jrohy/trojan)
-[![Downloads](https://img.shields.io/github/downloads/Jrohy/trojan/total.svg)](https://img.shields.io/github/downloads/Jrohy/trojan/total.svg)
+![](https://img.shields.io/github/v/release/alireza0/trojan-english.svg) 
+![](https://img.shields.io/docker/pulls/alireza0/trojan-english.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/alireza0/trojan-english)](https://goreportcard.com/report/github.com/alireza0/trojan-english)
+[![Downloads](https://img.shields.io/github/downloads/alireza0/trojan-english/total.svg)](https://img.shields.io/github/downloads/alireza0/trojan-english/total.svg)
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
@@ -35,7 +35,7 @@ source <(curl -sL https://git.io/trojan-install) --remove
 ```
 Enter the 'Trojan' to enter the management program after installation
 Browser access https: // Domain name can be available online web page to manage Trojan user
-Front page source code address: [train-web] (https://github.com/jrohy/trojan-web)
+Front page source code address: [train-web] (https://github.com/alireza0/trojan-english-web)
 
 ### b. docker run
 1. Install mysql  
@@ -47,7 +47,7 @@ docker run --name trojan-mariadb --restart=always -p 3306:3306 -v /home/mariadb:
 Both ports and root passwords and persistence directory can be changed to other
 2. Install Trojan
 ```
-docker run -it -d --name trojan --net=host --restart=always --privileged jrohy/trojan init
+docker run -it -d --name trojan --net=host --restart=always --privileged alireza0/trojan-english init
 ```
 After running, enter the container `docker exec -it trojan bash`, Then enter 'trjan' to initialize the installation
 

@@ -3,7 +3,7 @@ package trojan
 import (
 	"encoding/base64"
 	"fmt"
-	"net/url"
+	// "net/url"
 	"strconv"
 	"strings"
 	"trojan/core"

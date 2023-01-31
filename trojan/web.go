@@ -19,7 +19,7 @@ func WebMenu() {
 	}
 }
 
-// ResetAdminPass 重置管理员密码
+// ResetAdminPass Reset the administrator password
 func ResetAdminPass() {
 	inputPass := util.Input("Please enter the admin user password: ", "")
 	if inputPass == "" {
