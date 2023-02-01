@@ -13,7 +13,7 @@ DOWNLAOD_URL="https://github.com/alireza0/trojan-english/releases/download/"
 
 VERSION_CHECK="https://api.github.com/repos/alireza0/trojan-english/releases/latest"
 
-SERVICE_URL="https://raw.githubusercontent.com/Jrohy/trojan/master/asset/trojan-web.service"
+SERVICE_URL="https://raw.githubusercontent.com/alireza0/trojan-english/master/asset/trojan-web.service"
 
 [[ -e /var/lib/trojan-manager ]] && UPDATE=1
 
@@ -178,7 +178,7 @@ installTrojan(){
         colorEcho $GREEN "Update trojan management GUI succeed!\n"
     fi
     setupCron
-    [[ $SHOW_TIP == 1 ]] && echo "Browser access'`colorEcho $BLUE https://domain name`' can be managed by online trojan multi-user"
+    [[ $SHOW_TIP == 1 ]] && echo "Browser access'`colorEcho $BLUE https://domain_name`' can be managed by online trojan multi-user"
 }
 
 main(){

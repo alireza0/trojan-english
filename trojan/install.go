@@ -14,7 +14,7 @@ import (
 
 var (
 	dockerInstallUrl = "https://docker-install.netlify.app/install.sh"
-	dbDockerRun      = "docker run --name trojan-mariadb --restart=always -p %d:3306 -v /home/mariadb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=%s -e MYSQL_ROOT_HOST=%% -e MYSQL_DATABASE=trojan -d mariadb:10.2"
+	dbDockerRun      = "docker run --name trojan-mariadb --restart=always -p 127.0.0.1:%d:3306 -v /home/mariadb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=%s -e MYSQL_ROOT_HOST=%% -e MYSQL_DATABASE=trojan -d mariadb:10.2"
 )
 
 // InstallMenu installation manual
@@ -122,7 +122,7 @@ func InstallTls() {
 		if server != "letsencrypt" {
 			var email string
 			for {
-				email = util.Input(fmt.Sprintf("Please enter the mailbox required to apply for a%S domain name: ", server), "")
+				email = util.Input(fmt.Sprintf("Please enter the mailbox required to apply for domain %s: ", server), "")
 				if email == "" {
 					fmt.Println("The mailbox address of the domain name is empty!")
 					return

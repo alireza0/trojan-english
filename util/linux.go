@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// PortIsUse 判断端口是否占用
+// PortIsUse Determine whether the port is occupied
 func PortIsUse(port int) bool {
 	_, tcpError := net.DialTimeout("tcp", fmt.Sprintf(":%d", port), time.Millisecond*50)
 	udpAddr, _ := net.ResolveUDPAddr("udp4", fmt.Sprintf(":%d", port))
@@ -24,7 +24,7 @@ func PortIsUse(port int) bool {
 	return tcpError == nil || udpError != nil
 }
 
-// RandomPort 获取没占用的随机端口
+// RandomPort Get the random port that is not occupied
 func RandomPort() int {
 	for {
 		rand.Seed(time.Now().UnixNano())
@@ -35,9 +35,9 @@ func RandomPort() int {
 	}
 }
 
-// IsExists 检测指定路径 file或者 file夹是否存在
+// IsExists Check whether the specified path file or file clip exists
 func IsExists(path string) bool {
-	_, err := os.Stat(path) //os.Stat获取 file信息
+	_, err := os.Stat(path) //os.Stat Get file information
 	if err != nil {
 		if os.IsExist(err) {
 			return true
@@ -47,7 +47,7 @@ func IsExists(path string) bool {
 	return true
 }
 
-// GetLocalIP 获取本机ipv4地址
+// GetLocalIP Get the IPv4 address of this machine
 func GetLocalIP() string {
 	resp, err := http.Get("http://api.ipify.org")
 	if err != nil {
@@ -58,7 +58,7 @@ func GetLocalIP() string {
 	return string(s)
 }
 
-// InstallPack 安装指定名字软件
+// InstallPack Install the specified name software
 func InstallPack(name string) {
 	if !CheckCommandExists(name) {
 		if CheckCommandExists("yum") {
@@ -70,7 +70,7 @@ func InstallPack(name string) {
 	}
 }
 
-// OpenPort 开通指定端口
+// OpenPort Open the specified port
 func OpenPort(port int) {
 	if CheckCommandExists("firewall-cmd") {
 		ExecCommand(fmt.Sprintf("firewall-cmd --zone=public --add-port=%d/tcp --add-port=%d/udp --permanent >/dev/null 2>&1", port, port))
@@ -86,7 +86,7 @@ func OpenPort(port int) {
 	}
 }
 
-// Log 实时打印指定服务日志
+// Log Real-time printing specified service log
 func Log(serviceName string, line int) {
 	result, _ := LogChan(serviceName, "-n "+strconv.Itoa(line), make(chan byte))
 	for line := range result {
@@ -94,7 +94,7 @@ func Log(serviceName string, line int) {
 	}
 }
 
-// LogChan 指定服务实时日志, 返回chan
+// LogChan Specify the real-time log, return to chan
 func LogChan(serviceName, param string, closeChan chan byte) (chan string, error) {
 	cmd := exec.Command("bash", "-c", fmt.Sprintf("journalctl -f -u %s -o cat %s", serviceName, param))
 

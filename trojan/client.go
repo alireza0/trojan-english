@@ -24,7 +24,7 @@ func GenClientJson() {
 		user = *userList[0]
 	} else {
 		UserList()
-		choice := util.LoopInput("Please select the user serial number to generate file: ", userList, true)
+		choice := util.LoopInput("Please select the user number to generate file: ", userList, true)
 		if choice < 0 {
 			return
 		}

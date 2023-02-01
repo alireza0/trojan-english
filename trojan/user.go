@@ -13,7 +13,7 @@ import (
 // UserMenu User management menu
 func UserMenu() {
 	fmt.Println()
-	menu := []string { "Add User" , "Delete User" , "Limit Traffic" , "Clear Traffic" , "Set Time Limit" , "Cancel Time Limit" }
+	menu := []string{"Add User", "Delete User", "Limit Traffic", "Clear Traffic", "Set Time Limit", "Cancel Time Limit"}
 	switch util.LoopInput("Please select: ", menu, false) {
 	case 1:
 		AddUser()
@@ -55,11 +55,11 @@ func AddUser() {
 	}
 }
 
-// DelUser delete users
+// DelUser Delete user
 func DelUser() {
 	userList := UserList()
 	mysql := core.GetMysql()
-	choice := util.LoopInput("Please select the user serial number to be deleted: ", userList, true)
+	choice := util.LoopInput("Please select the user number to be deleted: ", userList, true)
 	if choice == -1 {
 		return
 	}
@@ -77,7 +77,7 @@ func SetUserQuota() {
 	)
 	userList := UserList()
 	mysql := core.GetMysql()
-	choice := util.LoopInput("Please select the user serial number to limit the traffic: ", userList, true)
+	choice := util.LoopInput("Please select the user number to limit the traffic: ", userList, true)
 	if choice == -1 {
 		return
 	}
@@ -99,7 +99,7 @@ func SetUserQuota() {
 func CleanData() {
 	userList := UserList()
 	mysql := core.GetMysql()
-	choice := util.LoopInput("Please select the user serial number to clear the flow: ", userList, true)
+	choice := util.LoopInput("Please select the user number to clear the flow: ", userList, true)
 	if choice == -1 {
 		return
 	}
@@ -112,7 +112,7 @@ func CleanData() {
 func CancelExpire() {
 	userList := UserList()
 	mysql := core.GetMysql()
-	choice := util.LoopInput("Please select the user serial number to cancel the time limit: ", userList, true)
+	choice := util.LoopInput("Please select the user number to cancel the time limit: ", userList, true)
 	if choice == -1 {
 		return
 	}
@@ -129,7 +129,7 @@ func CancelExpire() {
 func SetupExpire() {
 	userList := UserList()
 	mysql := core.GetMysql()
-	choice := util.LoopInput("Please select the user serial number to set the time limit: ", userList, true)
+	choice := util.LoopInput("Please select the user number to set the time limit: ", userList, true)
 	if choice == -1 {
 		return
 	}
@@ -188,7 +188,7 @@ func UserList(ids ...string) []*core.User {
 		} else {
 			fmt.Println("Date of Expiry: " + util.Cyan(k.ExpiryDate))
 		}
-		remark := url.QueryEscape(fmt.Sprintf("%s", k.Username))
+		remark := url.QueryEscape(k.Username)
 		fmt.Println("Share link: " + util.Green(fmt.Sprintf("trojan://%s@%s:%d#%s", string(pass), domain, port, remark)))
 		fmt.Println()
 	}

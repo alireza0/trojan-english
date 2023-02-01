@@ -5,10 +5,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	mysqlDriver "github.com/go-sql-driver/mysql"
 	"io/ioutil"
 	"log"
 	"time"
+
+	mysqlDriver "github.com/go-sql-driver/mysql"
 
 	"strconv"
 	"strings"
@@ -175,7 +176,7 @@ func (mysql *Mysql) UpdateUser(id uint, username string, base64Pass string, orig
 	return nil
 }
 
-// DeleteUser delete users
+// DeleteUser Delete user
 func (mysql *Mysql) DeleteUser(id uint) error {
 	db := mysql.GetDB()
 	if db == nil {
